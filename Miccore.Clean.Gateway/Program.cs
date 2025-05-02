@@ -33,7 +33,6 @@ if (app.Environment.IsDevelopment())
 app.UseSwagger();
 app.UseHttpsRedirection();
 app.UseSwaggerForOcelotUI(opt => {
-        opt.DownstreamSwaggerEndPointBasePath = "/gateway/swagger/docs";
         opt.PathToSwaggerGenerator = "/swagger/docs";
     }).UseOcelot().Wait();
 
