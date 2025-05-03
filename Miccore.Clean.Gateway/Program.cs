@@ -9,14 +9,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Configuration
-    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
     .AddJsonFile($"appsettings.local.json", optional: true, reloadOnChange: true)
-    .AddJsonFile("ocelot.json")
+    .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
     .AddEnvironmentVariables();
 builder.Services.AddOpenApi();
 builder.Services.AddOcelot();
-builder.Services.AddSwaggerForOcelot(builder.Configuration);;
+builder.Services.AddSwaggerForOcelot(builder.Configuration);
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Miccore.Clean.Gateway API", Version = "v1" });
@@ -32,7 +32,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseSwagger();
 app.UseHttpsRedirection();
-app.UseSwaggerForOcelotUI().UseOcelot().Wait();
+app.UseSwaggerForOcelotUI(opt =>
+    {
+        opt.PathToSwaggerGenerator = "/swagger/docs";
+    }
+);
+
+app.UseOcelot().Wait();
 
 
 app.Run();                                                                  
