@@ -13,7 +13,7 @@ builder.Configuration
     .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
     .AddEnvironmentVariables();
 builder.Services.AddOpenApi();
-builder.Services.AddOcelot();
+// builder.Services.AddOcelot();
 builder.Services.AddSwaggerForOcelot(builder.Configuration);
 
 builder.AddServiceDefaults();
@@ -26,7 +26,8 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseSwagger();
+
+// app.UseSwagger();
 app.UseHttpsRedirection();
 app.UseSwaggerForOcelotUI(opt =>
             {
