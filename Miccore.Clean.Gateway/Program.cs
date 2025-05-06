@@ -15,6 +15,10 @@ builder.Configuration
 builder.Services.AddOpenApi();
 builder.Services.AddOcelot();
 builder.Services.AddSwaggerForOcelot(builder.Configuration);
+builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("", new OpenApiInfo { Title = "Miccore.Clean.Gateway API", Version = "v1" });
+            });
 
 builder.AddServiceDefaults();
 
@@ -26,12 +30,11 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-
-// app.UseSwagger();
+app.UseSwagger();
 app.UseHttpsRedirection();
 app.UseSwaggerForOcelotUI(opt =>
             {
-                opt.DownstreamSwaggerEndPointBasePath = "/swagger/docs";
+                opt.DownstreamSwaggerEndPointBasePath = "swagger/docs";
                 opt.PathToSwaggerGenerator = "/swagger/docs";
             });
 app.UseOcelot().Wait();
