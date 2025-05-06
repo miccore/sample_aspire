@@ -36,6 +36,7 @@ app.UseSwaggerForOcelotUI(opt =>
             {
                 opt.DownstreamSwaggerEndPointBasePath = "swagger/docs";
                 opt.PathToSwaggerGenerator = "/swagger/docs";
+                opt.ServerOcelot = "/" ;
             });
 app.UseOcelot().Wait();
 
