@@ -14,11 +14,9 @@ builder.Configuration
     .AddEnvironmentVariables();
 builder.Services.AddOpenApi();
 builder.Services.AddOcelot();
-builder.Services.AddSwaggerForOcelot(builder.Configuration);
-builder.Services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("", new OpenApiInfo { Title = "Miccore.Clean.Gateway API", Version = "v1" });
-            });
+builder.Services.AddSwaggerForOcelot(builder.Configuration, null ,c  => {
+     c.SwaggerDoc("", new OpenApiInfo { Title = "Miccore.Clean.Gateway API", Version = "v1" });
+});
 
 builder.AddServiceDefaults();
 
