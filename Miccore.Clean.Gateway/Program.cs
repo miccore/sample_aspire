@@ -1,6 +1,4 @@
 using Microsoft.OpenApi.Models;
-using MMLib.Ocelot.Provider.AppConfiguration;
-using MMLib.SwaggerForOcelot.DependencyInjection;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
@@ -22,6 +20,8 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Miccore.Clean.Gateway API", Version = "v1" });
 });
 
+builder.AddServiceDefaults();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,12 +32,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseSwagger();
 app.UseHttpsRedirection();
-app.UseSwaggerForOcelotUI(opt =>
-    {
-        opt.PathToSwaggerGenerator = "/swagger/docs";
-    }
-);
-
+app.UseSwaggerForOcelotUI();
 app.UseOcelot().Wait();
 
 
