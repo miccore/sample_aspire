@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
@@ -37,6 +38,32 @@ public static class Extensions
         // {
         //     options.AllowedSchemes = ["https"];
         // });
+
+        return builder;
+    }
+
+    /// <summary>
+    /// Adds gateway-specific defaults including memory cache and optional JWT authentication.
+    /// Call this method in addition to AddServiceDefaults for API Gateway projects.
+    /// </summary>
+    public static TBuilder AddGatewayDefaults<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
+    {
+        // Add service defaults first
+        builder.AddServiceDefaults();
+
+        // Add memory cache (required for Ocelot rate limiting and caching)
+        builder.Services.AddMemoryCache();
+
+        // Add response compression
+        builder.Services.AddResponseCompression(options =>
+        {
+            options.EnableForHttps = true;
+        });
+
+        // Optional: Add JWT authentication if configured
+        // To enable JWT, add JWT section to appsettings.json:
+        // "Jwt": { "Authority": "https://your-identity-server", "Audience": "your-api" }
+        // And install Microsoft.AspNetCore.Authentication.JwtBearer package
 
         return builder;
     }
@@ -113,6 +140,21 @@ public static class Extensions
                 Predicate = r => r.Tags.Contains("live")
             });
         }
+
+        return app;
+    }
+
+    /// <summary>
+    /// Maps gateway-specific endpoints including response compression middleware.
+    /// Call this method instead of MapDefaultEndpoints for API Gateway projects.
+    /// </summary>
+    public static WebApplication MapGatewayEndpoints(this WebApplication app)
+    {
+        // Map default health check endpoints
+        app.MapDefaultEndpoints();
+
+        // Enable response compression
+        app.UseResponseCompression();
 
         return app;
     }

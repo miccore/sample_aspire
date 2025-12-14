@@ -1,0 +1,94 @@
+{
+  "_comment": "This is an example file showing how to configure routes. Copy the routes to ocelot.json or ocelot.Development.json",
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "UpstreamPathTemplate": "/catalog/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ],
+      "ServiceName": "catalog",
+      "SwaggerKey": "catalog",
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "1m",
+        "PeriodTimespan": 60,
+        "Limit": 100
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 10000,
+        "TimeoutValue": 30000
+      },
+      "FileCacheOptions": {
+        "TtlSeconds": 30,
+        "Region": "catalogcache"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "UpstreamPathTemplate": "/orders/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Patch" ],
+      "ServiceName": "orders",
+      "SwaggerKey": "orders",
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "1m",
+        "PeriodTimespan": 60,
+        "Limit": 50
+      },
+      "QoSOptions": {
+        "ExceptionsAllowedBeforeBreaking": 3,
+        "DurationOfBreak": 10000,
+        "TimeoutValue": 30000
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "UpstreamPathTemplate": "/identity/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ],
+      "ServiceName": "identity",
+      "SwaggerKey": "identity",
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "RateLimitOptions": {
+        "EnableRateLimiting": true,
+        "Period": "1m",
+        "PeriodTimespan": 60,
+        "Limit": 30
+      }
+    }
+  ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "catalog",
+      "Config": [
+        {
+          "Name": "Catalog API",
+          "Version": "v1",
+          "Url": "{ServiceName}/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "orders",
+      "Config": [
+        {
+          "Name": "Orders API",
+          "Version": "v1",
+          "Url": "{ServiceName}/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "identity",
+      "Config": [
+        {
+          "Name": "Identity API",
+          "Version": "v1",
+          "Url": "{ServiceName}/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ]
+}
