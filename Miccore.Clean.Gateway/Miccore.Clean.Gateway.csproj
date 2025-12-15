@@ -12,10 +12,7 @@
     <PackageReference Include="MMLib.Ocelot.Provider.AppConfiguration" Version="4.0.0" />
     <PackageReference Include="MMLib.SwaggerForOcelot" Version="9.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="../Miccore.Clean.ServiceDefaults/Miccore.Clean.ServiceDefaults.csproj" />
+    <PackageReference Include="Miccore.Net.ServiceDefaults" Version="1.0.0" />
   </ItemGroup>
 
 </Project>
