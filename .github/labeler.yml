@@ -1,0 +1,28 @@
+# Labeler configuration for PR auto-labeling
+# See: https://github.com/actions/labeler
+
+gateway:
+  - changed-files:
+      - any-glob-to-any-file: 'Miccore.Clean.Gateway/**/*'
+
+apphost:
+  - changed-files:
+      - any-glob-to-any-file: 'Miccore.Clean.AppHost/**/*'
+
+configuration:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.json'
+          - '**/*.yml'
+          - '**/*.yaml'
+          - '!.github/**/*'
+
+ci-cd:
+  - changed-files:
+      - any-glob-to-any-file: '.github/**/*'
+
+documentation:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.md'
+          - 'docs/**/*'

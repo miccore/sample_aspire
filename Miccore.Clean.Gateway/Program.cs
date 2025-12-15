@@ -1,46 +1,38 @@
-using Microsoft.OpenApi.Models;
-using Ocelot.DependencyInjection;
-using Ocelot.Middleware;
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Configuration
-    .SetBasePath(builder.Environment.ContentRootPath)
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
-    .AddJsonFile($"appsettings.local.json", optional: true, reloadOnChange: true)
-    .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
-    .AddEnvironmentVariables();
-builder.Services.AddOpenApi();
-builder.Services.AddOcelot();
-builder.Services.AddSwaggerForOcelot(builder.Configuration, null ,c  => {
-     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Miccore.Clean.Gateway API", Version = "v1" });
-});
+// Load configuration files with environment-specific overrides
+builder.Configuration.AddGatewayConfiguration(builder.Environment);
 
+// Add Aspire service defaults (OpenTelemetry, Health Checks, Service Discovery)
 builder.AddServiceDefaults();
+builder.AddGatewayDefaults();
+
+// Add Memory Cache (required by Ocelot AppConfiguration provider)
+builder.Services.AddMemoryCache();
+
+// Add Ocelot with AppConfiguration provider for dynamic service discovery
+builder.Services.AddOcelotServices();
+
+// Configure Swagger for Ocelot aggregation
+builder.Services.AddSwaggerServices(builder.Configuration);
+
+// Configure CORS with Options Pattern
+builder.Services.AddCorsPolicy(builder.Environment, builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+// Map Aspire health check endpoints (/health, /alive)
+app.MapDefaultEndpoints();
 
+// Enable CORS
+app.UseCorsPolicy();
 
-app.UseSwagger();
-app.UseSwaggerUI(c =>
-{
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Gateway API");
-    c.RoutePrefix = string.Empty;
-});
+// Configure Swagger UI
+app.UseSwaggerServices();
+
 app.UseHttpsRedirection();
-app.UseSwaggerForOcelotUI(opt =>
-            {
-                opt.PathToSwaggerGenerator = "/swagger/docs";
-            });
-app.UseOcelot().Wait();
 
-app.Run();                                                                  
+// Ocelot middleware (async pattern)
+await app.UseOcelotMiddleware();
+
+app.Run();
