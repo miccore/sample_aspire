@@ -43,27 +43,27 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 builder.AddProject<Projects.Miccore_Clean_Gateway>("Gateway")
 #region Gateway Configuration
-    // Reference your services here to enable Aspire service discovery
-    // The gateway will automatically resolve service names to their endpoints
-    // Example:
-    // .WithReference(catalogService)
-    // .WithReference(ordersService)
-    // .WithReference(identityService)
-    // .WithReference(redis)
-    
-    // For each referenced service, add an entry in Gateway's appsettings.json:
-    // "Services": {
-    //   "catalog": { "DownstreamPath": "http://catalog" },
-    //   "orders": { "DownstreamPath": "http://orders" }
-    // }
-    // 
-    // Then configure routes in ocelot.json using ServiceName (not DownstreamHostAndPorts)
-    // See ocelot.routes.example.json for complete route configuration examples
-    // 
-    // IMPORTANT: Service names must match between:
-    // - The name used in AddContainer/AddProject/AddExecutable (e.g., "catalog")
-    // - The ServiceName in ocelot.json routes
-    // - The key in appsettings.json Services section
+// Reference your services here to enable Aspire service discovery
+// The gateway will automatically resolve service names to their endpoints
+// Example:
+// .WithReference(catalogService)
+// .WithReference(ordersService)
+// .WithReference(identityService)
+// .WithReference(redis)
+
+// For each referenced service, add an entry in Gateway's appsettings.json:
+// "Services": {
+//   "catalog": { "DownstreamPath": "http://catalog" },
+//   "orders": { "DownstreamPath": "http://orders" }
+// }
+// 
+// Then configure routes in ocelot.json using ServiceName (not DownstreamHostAndPorts)
+// See ocelot.routes.example.json for complete route configuration examples
+// 
+// IMPORTANT: Service names must match between:
+// - The name used in AddContainer/AddProject/AddExecutable (e.g., "catalog")
+// - The ServiceName in ocelot.json routes
+// - The key in appsettings.json Services section
 #endregion
 ;
 

@@ -35,4 +35,4 @@ app.UseHttpsRedirection();
 // Ocelot middleware (async pattern)
 await app.UseOcelotMiddleware();
 
-app.Run();                                                                  
+app.Run();
