@@ -14,6 +14,17 @@
 # User-specific files (Mono Auto Generated)
 mono_crash.*
 
+# .NET Aspire
+.aspire/
+aspire-manifest.json
+
+# User secrets
+secrets.json
+
+# Local environment overrides
+appsettings.local.json
+appsettings.*.local.json
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -194,4 +205,47 @@ OpenCover/
 
 # Azure DevOps
 .vsts/
+
+# .NET tools
+.config/dotnet-tools.json
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+nuget.exe
+
+# Test results
+TestResults/
+*.trx
+coverage*.xml
+coverage*.json
+coverage/
+
+# BenchmarkDotNet
+BenchmarkDotNet.Artifacts/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+# Docker
+docker-compose*.override.yml
+
+# Certificates
+*.pfx
+*.p12
+*.cer
+*.crt
+*.key
+!*.key.pub
+
+# Environment files
+.env
+.env.*
+!.env.example
 ```
