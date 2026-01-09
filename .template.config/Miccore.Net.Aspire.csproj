@@ -24,8 +24,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="../**" Exclude="../**/bin/**;../**/obj/**;../**/.vs/**;../**/.vscode/**;../**/.idea/**;../**/*.user;../**/.aspire/**;../**/appsettings.local.json;../.git/**;../.github/**;../.template.config/**/*.csproj;../package-lock.json;../node_modules/**" />
-    <Content Include="template.json" />
+    <!-- Template config -->
+    <Content Include="template.json" PackagePath="content/.template.config/" />
+    
+    <!-- Solution file -->
+    <Content Include="../Miccore.Clean.sln" PackagePath="content/" />
+    <Content Include="../.gitignore" PackagePath="content/" />
+    <Content Include="../package.json" PackagePath="content/" />
+    
+    <!-- AppHost project -->
+    <Content Include="../Miccore.Clean.AppHost/**" Exclude="../Miccore.Clean.AppHost/bin/**;../Miccore.Clean.AppHost/obj/**" PackagePath="content/Miccore.Clean.AppHost/" />
+    
+    <!-- Gateway project -->
+    <Content Include="../Miccore.Clean.Gateway/**" Exclude="../Miccore.Clean.Gateway/bin/**;../Miccore.Clean.Gateway/obj/**" PackagePath="content/Miccore.Clean.Gateway/" />
   </ItemGroup>
 
   <ItemGroup>
