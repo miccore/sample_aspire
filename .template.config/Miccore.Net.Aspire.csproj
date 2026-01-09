@@ -14,7 +14,7 @@
     <RepositoryUrl>https://github.com/miccore/sample_aspire</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
 
-    <TargetFramework>net10</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>content</ContentTargetFolders>
