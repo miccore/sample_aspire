@@ -68,6 +68,11 @@
       ]
     }
   ],
+  "primaryOutputs": [
+    {
+      "path": "Miccore.Clean.sln"
+    }
+  ],
   "postActions": [
     {
       "condition": true,
