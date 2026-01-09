@@ -1,3 +1,64 @@
+# Miccore.Net.Aspire Template
+
+Template .NET Aspire avec orchestration AppHost et Gateway Ocelot pour architecture microservices.
+
+## 📦 Installation du Template
+
+```bash
+# Installer depuis NuGet.org
+dotnet new install Miccore.Net.Aspire
+
+# Ou installer une version spécifique
+dotnet new install Miccore.Net.Aspire::1.0.0
+```
+
+## 🚀 Utilisation
+
+### Créer un nouveau projet
+
+```bash
+# Format recommandé : Company.Service.Component
+dotnet new miccore-aspire -n Acme.Ecommerce.Catalog
+
+# Exemples de nommage :
+dotnet new miccore-aspire -n Contoso.Crm.Api
+dotnet new miccore-aspire -n Fabrikam.Inventory.Service
+
+# Nom simple (aussi accepté)
+dotnet new miccore-aspire -n MonProjet
+```
+
+### Structure générée
+
+```
+Acme.Ecommerce.Catalog/
+├── Acme.Ecommerce.Catalog.sln
+├── Acme.Ecommerce.Catalog.AppHost/
+│   ├── Acme.Ecommerce.Catalog.AppHost.csproj
+│   ├── Program.cs
+│   └── appsettings.json
+└── Acme.Ecommerce.Catalog.Gateway/
+    ├── Acme.Ecommerce.Catalog.Gateway.csproj
+    ├── Program.cs
+    ├── ocelot.json
+    └── Configuration/
+```
+
+### Lancer le projet
+
+```bash
+cd Acme.Ecommerce.Catalog
+dotnet run --project Acme.Ecommerce.Catalog.AppHost
+```
+
+## 🗑️ Désinstaller le template
+
+```bash
+dotnet new uninstall Miccore.Net.Aspire
+```
+
+---
+
 # Guide : Orchestrer des Services Multi-Repos avec .NET Aspire
 
 Ce guide explique comment ajouter des services provenant de différents dépôts Git à l'orchestration Aspire.

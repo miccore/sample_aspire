@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageType>Template</PackageType>
+    <PackageId>Miccore.Net.Aspire</PackageId>
+    <Title>Miccore Aspire Gateway Template</Title>
+    <Version>1.0.0</Version>
+    <Authors>Miccore</Authors>
+    <Description>Template .NET Aspire avec orchestration AppHost et Gateway Ocelot pour architecture microservices. Format de nommage recommandé : Company.Service.Component (ex: Acme.Ecommerce.Catalog, Contoso.Crm.Api)</Description>
+    <PackageTags>dotnet-new;templates;aspire;gateway;ocelot;microservices;api;orchestration</PackageTags>
+    <PackageProjectUrl>https://github.com/miccore/sample_aspire</PackageProjectUrl>
+    <PackageReadmeFile>ReadMe.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/miccore/sample_aspire</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+
+    <TargetFramework>net10</TargetFramework>
+    <IncludeContentInPack>true</IncludeContentInPack>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <ContentTargetFolders>content</ContentTargetFolders>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+    <NoDefaultExcludes>true</NoDefaultExcludes>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="../**" Exclude="../**/bin/**;../**/obj/**;../**/.vs/**;../**/.vscode/**;../**/.idea/**;../**/*.user;../**/.aspire/**;../**/appsettings.local.json;../.git/**;../.github/**;../.template.config/**/*.csproj;../package-lock.json;../node_modules/**" />
+    <Content Include="template.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../ReadMe.md" Pack="true" PackagePath="/" />
+    <None Include="icon.png" Pack="true" PackagePath="/" Condition="Exists('icon.png')" />
+  </ItemGroup>
+
+</Project>

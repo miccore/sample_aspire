@@ -1,0 +1,84 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Miccore",
+  "classifications": [
+    "Web",
+    "Aspire",
+    "Gateway",
+    "Microservices",
+    "API"
+  ],
+  "identity": "Miccore.Net.Aspire",
+  "name": "Miccore Aspire Gateway Template",
+  "description": "Un template .NET Aspire avec orchestration AppHost et Gateway Ocelot. Format recommandé : Company.Service.Component (ex: Acme.Ecommerce.Catalog)",
+  "shortName": "miccore-aspire",
+  "tags": {
+    "language": "C#",
+    "type": "solution"
+  },
+  "sourceName": "Miccore.Clean",
+  "preferNameDirectory": true,
+  "symbols": {
+    "userSecretsId": {
+      "type": "generated",
+      "generator": "guid",
+      "replaces": "fb1128f5-55c3-4b7a-8fe6-aca738b42942",
+      "parameters": {
+        "format": "D"
+      }
+    },
+    "appHostGuid": {
+      "type": "generated",
+      "generator": "guid",
+      "replaces": "9F19C2CA-A284-4D84-9B73-4186AAC99323",
+      "parameters": {
+        "format": "D"
+      }
+    },
+    "gatewayGuid": {
+      "type": "generated",
+      "generator": "guid",
+      "replaces": "F44A6D42-D2CC-4590-A2EB-B263D4AD5741",
+      "parameters": {
+        "format": "D"
+      }
+    }
+  },
+  "sources": [
+    {
+      "modifiers": [
+        {
+          "exclude": [
+            "**/bin/**",
+            "**/obj/**",
+            "**/.vs/**",
+            "**/.vscode/**",
+            "**/.idea/**",
+            "**/*.user",
+            "**/.aspire/**",
+            "**/appsettings.local.json",
+            ".git/**",
+            ".github/**",
+            ".template.config/**",
+            "package-lock.json",
+            "node_modules/**",
+            "**/*Miccore.Net.*"
+          ]
+        }
+      ]
+    }
+  ],
+  "postActions": [
+    {
+      "condition": true,
+      "description": "Restauration des packages NuGet",
+      "manualInstructions": [
+        {
+          "text": "Exécutez 'dotnet restore'"
+        }
+      ],
+      "actionId": "210D431B-A78B-4D2F-B762-4ED3E3EA9025",
+      "continueOnError": true
+    }
+  ]
+}

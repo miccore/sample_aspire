@@ -1,0 +1,77 @@
+name: NuGet Publish (Manual)
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version du package (ex: 1.0.0, 1.2.3-preview)'
+        required: true
+        type: string
+      push_to_nuget:
+        description: 'Publier sur NuGet.org'
+        required: true
+        type: boolean
+        default: true
+
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+  NUGET_SOURCE: https://api.nuget.org/v3/index.json
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate version format
+        run: |
+          if [[ ! "${{ inputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9]+)?$ ]]; then
+            echo "❌ Version format invalid: ${{ inputs.version }}"
+            echo "Expected format: X.Y.Z or X.Y.Z-suffix (ex: 1.0.0, 1.2.3-preview)"
+            exit 1
+          fi
+          echo "✅ Version format valid: ${{ inputs.version }}"
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Pack template
+        run: |
+          dotnet pack .template.config/Miccore.Net.Aspire.csproj \
+            -c Release \
+            -o ./nupkg \
+            /p:Version=${{ inputs.version }}
+
+      - name: Push to NuGet.org
+        if: ${{ inputs.push_to_nuget }}
+        run: |
+          dotnet nuget push ./nupkg/*.nupkg \
+            --api-key ${{ secrets.NUGET_API_KEY }} \
+            --source ${{ env.NUGET_SOURCE }} \
+            --skip-duplicate
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-package-${{ inputs.version }}
+          path: ./nupkg/*.nupkg
+          retention-days: 30
+
+      - name: Summary
+        run: |
+          echo "## 📦 Package Created" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version:** ${{ inputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Published to NuGet:** ${{ inputs.push_to_nuget }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Installation" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "dotnet new install Miccore.Net.Aspire::${{ inputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
