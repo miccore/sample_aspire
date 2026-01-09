@@ -64,12 +64,57 @@ jobs:
           path: ./nupkg/*.nupkg
           retention-days: 30
 
+      - name: Create and push tag
+        if: ${{ inputs.push_to_nuget }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${{ inputs.version }}" -m "Release v${{ inputs.version }}"
+          git push origin "v${{ inputs.version }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate release notes
+        id: release_notes
+        if: ${{ inputs.push_to_nuget }}
+        run: |
+          echo "NOTES<<EOF" >> $GITHUB_OUTPUT
+          echo "## 📦 Miccore.Net.Aspire v${{ inputs.version }}" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "### Installation" >> $GITHUB_OUTPUT
+          echo "\`\`\`bash" >> $GITHUB_OUTPUT
+          echo "dotnet new install Miccore.Net.Aspire::${{ inputs.version }}" >> $GITHUB_OUTPUT
+          echo "\`\`\`" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "### Utilisation" >> $GITHUB_OUTPUT
+          echo "\`\`\`bash" >> $GITHUB_OUTPUT
+          echo "dotnet new miccore-aspire -n Company.Service.Component" >> $GITHUB_OUTPUT
+          echo "\`\`\`" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "### NuGet" >> $GITHUB_OUTPUT
+          echo "[Miccore.Net.Aspire sur NuGet.org](https://www.nuget.org/packages/Miccore.Net.Aspire/${{ inputs.version }})" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        if: ${{ inputs.push_to_nuget }}
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ inputs.version }}
+          name: v${{ inputs.version }}
+          body: ${{ steps.release_notes.outputs.NOTES }}
+          draft: false
+          prerelease: ${{ contains(inputs.version, '-') }}
+          files: ./nupkg/*.nupkg
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Summary
         run: |
           echo "## 📦 Package Created" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **Version:** ${{ inputs.version }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Published to NuGet:** ${{ inputs.push_to_nuget }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **GitHub Release:** ${{ inputs.push_to_nuget && 'Created' || 'Skipped' }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Installation" >> $GITHUB_STEP_SUMMARY
           echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
